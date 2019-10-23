@@ -53,12 +53,19 @@ def update_check(id, conclusion, output)
     "output" => output
   }
 
+  puts "owner: #{@owner}"
+  puts "repo: #{@repo}"
+  puts "id: #{id}"
+  puts "body: #{body}"
+    
+  
   http = Net::HTTP.new('api.github.com', 443)
   http.use_ssl = true
   path = "/repos/#{@owner}/#{@repo}/check-runs/#{id}"
 
   resp = http.patch(path, body.to_json, @headers)
 
+  puts "resp.code #{resp.code}"
   if resp.code.to_i >= 300
     raise resp.message
   end
